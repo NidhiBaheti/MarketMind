@@ -1,17 +1,21 @@
 from agents.brand_agent import BrandAgent
-import random
+import time
 
-brand = BrandAgent(name="AirFlex", strategy="neutral")
+def test_endurastride_campaigns(rounds=5):
+    brand = BrandAgent(name="EnduraStride")
 
-# Simulate 10 campaign rounds
-for step in range(10):
-    message = brand.generate_campaign()
-    print(f"\n[Round {step+1}] Campaign: {message}")
+    for i in range(rounds):
+        print(f"\n🧢 [Campaign {i+1}] USP Focus: {brand.profile['usps'][0]}")
+        caption = brand.generate_campaign()
+        print(f"📣 Generated Caption: {caption}")
 
-    # Simulated feedback (randomized for testing)
-    score = random.uniform(0.3, 1.0)
-    print(f"Simulated feedback score: {round(score, 2)}")
+        # Optional: cycle USP manually to test prompt variety
+        if i % 2 == 1:
+            brand.cycle_usp()
 
-    brand.receive_feedback(score)
+        time.sleep(1)  # Add delay to avoid huggingface rate limits (if needed)
 
-print("\nFinal Agent Summary:", brand.summary())
+    print("\n📊 Final Summary:", brand.summary())
+
+if __name__ == "__main__":
+    test_endurastride_campaigns()
